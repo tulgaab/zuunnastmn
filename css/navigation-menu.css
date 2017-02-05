@@ -9,7 +9,7 @@
 
 /* ## Navigation Menu */
 .ow-navigation {
-	background-color: #2098df;
+	background-color: #4CAF50;
 	padding: 0;
 	min-height: 1px;
 	margin-bottom: 0;
@@ -22,7 +22,7 @@
 }
 .ow-navigation:before {
 	content: "";
-	background-color: #0f89d1;
+	background-color: #388E3C;
 	position: absolute;
 	left: 50%;
 	right: 0;
@@ -134,7 +134,7 @@
 		padding-right: 10px;
 		font-size: 12px;
 		white-space: normal;
-		color: #0F89D1;
+		color: #388E3C;
 	}
 	.ow-navigation .navbar-nav li.dropdown:hover > a,
 	.ow-navigation .navbar-nav li.dropdown:hover > a {
@@ -221,7 +221,7 @@
 	.navbar-fixed-top.ow-navigation .navbar-toggle:focus .icon-bar,
 	.navbar-fixed-top.ow-navigation .navbar-toggle:hover .icon-bar,
 	.ow-navigation .navbar-toggle:hover .icon-bar {
-		background-color: #0F89D1;
+		background-color: #388E3C;
 	}	
     .ow-navigation .navbar-collapse {
         border-top: 1px solid transparent;

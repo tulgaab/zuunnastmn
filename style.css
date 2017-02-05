@@ -189,7 +189,7 @@ ul {
 	line-height: 30px;
 }
 .top-header .col-md-6:last-child > a {
-	background-color: #33a9ee;
+	background-color: #4CAF50;
 	color: #fff;
 	padding: 10px 30px 10px 47px;
 	font-weight: 900;
@@ -289,7 +289,7 @@ ul {
 }
 .contact-details .detail-box {
 	padding: 30px 15px 30px 97px;
-	background-color: #33a9ee;
+	background-color: #4CAF50;
 }
 .contact-details .detail-box,
 .contact-details .detail-box a { 
@@ -301,9 +301,9 @@ ul {
 	position: absolute;
 	left: 0;
 	line-height: 60px;
-	background-color: #2098df;
+	background-color: #4CAF50;
 	text-align: center;
-	border-bottom: 1px solid #2098df;
+	border-bottom: 1px solid #4CAF50;
 }
 .contact-details .detail-box h4 { 
 	font-size: 13px;
@@ -319,14 +319,14 @@ ul {
 	line-height: 20px;
 }
 .contact-details .detail-box.phone-box {
-	background-color: #2098df;
+	background-color: #4CAF50;
 }
 .contact-details .detail-box.phone-box i {
-	background-color: #0f89d1;
+	background-color: #388E3C;
 	border-bottom-color: #fff;
 }
 .contact-details .detail-box.mail-box {
-	background-color: #0f89d1;
+	background-color: #388E3C;
 }
 .contact-details .detail-box.mail-box i {
 	background-color: #0779bc;
@@ -382,7 +382,7 @@ ul {
 	left: 0;
 	bottom: 0;
 	position: absolute;
-	background-color: #33a9ee;
+	background-color: #4CAF50;
 }
 
 /* -- Widget Links */
@@ -452,7 +452,7 @@ ul {
 .footer-main .widget-newsletter .input-group span button {
 	height: 50px;
 	width: 100%;
-	background-color: #0f89d1;
+	background-color: #388E3C;
 	border-radius: 0;
 	border: none;
 	font-size: 25px;
@@ -634,7 +634,7 @@ ul {
 	right: 0;
 	bottom: 0;
 	overflow: hidden;
-	background-color: #0f89d1;
+	background-color: #388E3C;
 }
 .left-shape-blue {
 	overflow: hidden;
@@ -677,7 +677,7 @@ ul {
 	right: 0;
 	bottom: 0;
 	overflow: hidden;
-	background-color: #33a9ee;
+	background-color: #4CAF50;
 }
 .right-shape-blue {
 	overflow: hidden;
@@ -705,7 +705,7 @@ ul {
 	background-position: right bottom;
 }
 .departments-banner .left-shape {
-	background-color: #33a9ee;
+	background-color: #4CAF50;
 }
 .departments-banner .right-shape {
 	background-color: #fafafa;
