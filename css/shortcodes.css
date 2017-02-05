@@ -31,7 +31,7 @@
 
 /* -- Photo Slider */
 .home-banner {
-	background: url("../images/banner-bg.jpg");
+	background: url("../assets/images/Laboratory_HD_Wallpaper.jpg");
 	width: 100%;
 	height: 100%;
 	background-size: cover;
@@ -287,7 +287,7 @@
 	padding-right: 0;
 }
 .opening-hours .message-block a {
-	border-color: #54aadc;
+	border-color: #388E3C;
 }
 .opening-hours .message-block a:hover {
 	background-color: #4CAF50;
@@ -512,7 +512,7 @@
 	border: none;
 	box-shadow: none;
 	max-height: 40px;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	font-size: 11px;
 	font-weight: 700;
 	letter-spacing: 1px;
@@ -545,7 +545,7 @@
 	right: 0;
 	top: 0;
 	bottom: 0;
-	background-color: rgba(51,169,238,0.92);
+	background-color: rgba(56, 142, 60, 0.92);
 	display: inline-block;
 }
 
@@ -635,7 +635,7 @@
 	right: 0;
 	top: 0;
 	bottom: 0;
-	background-color: #006199;
+	background-color: #388E3C;
 	opacity: 0;
 	border-color: transparent;
 }
@@ -750,7 +750,7 @@
 	right: 0;
 	bottom: 50%;	
 	color: #fff;	
-	background-color: rgba(51,169,238,0.85);
+	background-color: rgba(76, 175, 80, 0.85);
 	padding: 22px 28px;
 	max-width: 340px;
 	margin: 0 auto;
@@ -940,7 +940,7 @@
 	border-radius: 0;
 	text-decoration: none;
 	padding: 16px 15px;
-	background-color: #46b1f0;
+	background-color: #4CAF50;
 	border-bottom: 1px solid #dee8f3;
 	color: #fff;
 	width: 100%;	
@@ -980,14 +980,14 @@
 	font-weight: 600;
 	text-transform: uppercase;
 	text-decoration: none;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	letter-spacing: 1px;
 }
 .departments .panel-body > a > i {
 	display: inline-block;
 	margin-left: 5px;
 	font-size: 10px;
-	color: #59b9f1;
+	color: #4CAF50;
 }
 
 /* -- Counter Section */
@@ -1037,7 +1037,7 @@
 .happy-customer p {
 	font-size: 35px;
 	color: #fff;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	letter-spacing: 2px;
 	display: inline-block;
 	margin-top: 30px;
@@ -1049,7 +1049,7 @@
 }
 .happy-customer a {
 	font-size: 11px;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	color: #222;
 	text-transform: uppercase;
 	letter-spacing: 1px;
@@ -1474,7 +1474,7 @@
 .widget-title {
 	font-size: 22px;
 	color: #222;
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	text-transform: capitalize;
 	padding-bottom: 25px;
 	margin-top: 0;
@@ -1490,7 +1490,7 @@
 	border: 1px solid #ddd;	
 	color: #777;
 	font-size: 12px;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 .widget-search .btn-default {
 	border-radius: 0;
@@ -1526,7 +1526,7 @@
 .categories-type li a {
 	margin-left: 20px;
 	color: #777;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	font-size: 15px;
 	text-decoration: none;	
 	text-transform: capitalize;
@@ -1641,7 +1641,7 @@
 .recent-title a {
 	text-decoration: none;
 	color: #555;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	font-weight: 600;
 	display: inline-block;
 	width: 100%;
@@ -1832,7 +1832,7 @@
 	display: inline-block;
 	width: 100%;
 	text-decoration: none;
-	font-family: 'montserratlight';
+	font-family: 'Robotolight';
 	font-size: 14px;
 }
 .portfolio-categories li a::before {
