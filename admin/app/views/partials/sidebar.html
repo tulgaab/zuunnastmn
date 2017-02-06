@@ -7,15 +7,15 @@
             <div compile="app/views/partials/summary.html" class="btn-sidebar">
                <img data-ng-src="{{user.picture}}" alt="" class="mb center-block img-circle img-responsive thumb64" />
                <div class="text-center">
-                  <h4 class="text-bold m0">{{user.name}}</h4>
-                  <small>{{user.job}}</small>
+                  <h4 class="text-bold m0">{{currentUser.email}}</h4>
+                  <small>Системийн админ</small>
                </div>
             </div>
             <div class="text-center">
                <div class="text-muted mt-sm clearfix">
-                  <a href="#" compile="app/views/partials/contacts.html" class="text-sm btn-sidebar pull-left">
+                  <!-- <a href="#" compile="app/views/partials/contacts.html" class="text-sm btn-sidebar pull-left">
                      <em class="icon-speech-bubble fa-fw"></em>
-                  </a>
+                  </a> -->
                   <a href="#" compile="app/views/partials/settings.html" class="text-sm btn-sidebar pull-right">
                      <em class="icon-cog fa-fw"></em>
                   </a>

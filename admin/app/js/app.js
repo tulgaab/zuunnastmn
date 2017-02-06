@@ -481,7 +481,7 @@ App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$comp
         prefix : 'app/langs/',
         suffix : '.json'
     });
-    $translateProvider.preferredLanguage('en');
+    $translateProvider.preferredLanguage('mn');
     $translateProvider.useLocalStorage();
 
 }]).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
@@ -1958,12 +1958,13 @@ App.service('language', ["$translate", function($translate) {
       listIsOpen: false,
       // list of available languages
       available: {
+        'mn':    'Монгол хэл',
         'en':    'English',
         'es':    'Español',
         'pt':    'Português',
         'zh-cn': '中国简体',
       },
-      selected: 'English'
+      selected: 'Монгол хэл'
     },
     // display always the current ui language
     init: function () {
@@ -2451,9 +2452,16 @@ App.directive('portlet', ["$timeout", function($timeout) {
  * Also controls the collapse items states
  =========================================================*/
 
-App.controller('SidebarController', ['$rootScope', '$scope', '$location', '$http', '$timeout', 'sidebarMemu', 'appMediaquery', '$window',
-  function($rootScope, $scope, $location, $http, $timeout, sidebarMemu, appMediaquery, $window ){
+App.controller('SidebarController', ['$rootScope', '$scope', '$location', '$http', '$timeout', 'sidebarMemu', 'appMediaquery', '$window','Auth',
+  function($rootScope, $scope, $location, $http, $timeout, sidebarMemu, appMediaquery, $window,Auth){
     'use strict';
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.auth = Auth;
+    
+    $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+      $scope.currentUser = firebaseUser;
+    });
+
     var currentState = $rootScope.$state.current.name;
     var $win  = $($window);
     var $html = $('html');
