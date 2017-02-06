@@ -12,7 +12,7 @@ if (typeof $ === 'undefined') { throw new Error('This application\'s JavaScript 
 
 
 
-var App = angular.module('singular', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCookies', 'pascalprecht.translate', 'ui.bootstrap', 'ui.router', 'oc.lazyLoad', 'cfp.loadingBar', 'ui.utils'])
+var App = angular.module('singular', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCookies', 'pascalprecht.translate', 'ui.bootstrap', 'ui.router', 'oc.lazyLoad', 'cfp.loadingBar', 'ui.utils','firebase'])
     .run(["$rootScope", "$state", "$stateParams", '$localStorage', function ($rootScope, $state, $stateParams, $localStorage) {
     // Set reference to access them from any scope
     $rootScope.$state = $state;
@@ -22,8 +22,8 @@ var App = angular.module('singular', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCo
     // Scope Globals
     // ----------------------------------- 
     $rootScope.app = {
-      name: 'Singular',
-      description: 'Bootstrap + AngularJS',
+      name: 'Зуун наст эмийн үйлдвэр',
+      description: 'Удирдлагын хэсэг',
       year: ((new Date()).getFullYear()),
       viewAnimation: 'ng-fadeInLeft2',
       layout: {
@@ -50,9 +50,28 @@ var App = angular.module('singular', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCo
       picture:  'app/img/user/02.jpg'
     };
 
+    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+      if (error === "AUTH_REQUIRED") {
+        $state.go("page.login");
+      }
+    });
+
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        $rootScope.currentUser = user;
+      } else {
+        $rootScope.currentUser = null;
+      }
+    });
+
   }
 ]);
 
+App.factory("Auth", ["$firebaseAuth",
+  function($firebaseAuth) {
+    return $firebaseAuth();
+  }
+]);
 // Application Controller
 // ----------------------------------- 
 
@@ -157,9 +176,17 @@ App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$comp
         modules: appDependencies.modules
       });
 
+      var config = {
+          apiKey: "AIzaSyBVUG6_-oMMiheGh--b2PlDgLsK9g1-Ens",
+          authDomain: "zuunnast-1b0b1.firebaseapp.com",
+          databaseURL: "https://zuunnast-1b0b1.firebaseio.com",
+          storageBucket: "zuunnast-1b0b1.appspot.com",
+          messagingSenderId: "60171925495"
+      };
+      firebase.initializeApp(config);
 
       // default route to dashboard
-      $urlRouterProvider.otherwise('/app/dashboard');
+      $urlRouterProvider.otherwise('/page/login');
 
       // 
       // App Routes
@@ -348,7 +375,13 @@ App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$comp
         })
         .state('page.login', {
             url: '/login',
-            templateUrl: 'app/pages/login.html'
+            templateUrl: 'app/pages/login.html',
+            controller: 'LoginController',
+            resolve:{
+              "currentAuth": ["Auth", function(Auth) {
+                  return Auth.$waitForSignIn();
+              }]
+            }
         })
         .state('page.register', {
             url: '/register',
@@ -733,6 +766,26 @@ App.controller('MailboxController', ["$rootScope", "$scope", "$state", function(
   // Define mails at parent scope to use as cache for mail request
   $scope.mails = [];
 
+}]);
+
+App.controller('LoginController', ["$rootScope", "$scope", "$state","currentAuth","$firebaseAuth", "$firebaseObject", "Auth", function($rootScope, $scope, $state,currentAuth, $firebaseAuth, $firebaseObject, Auth) {
+  'use strict';
+  $scope.currentUser = $rootScope.currentUser;
+  if ($scope.currentUser){
+    $state.go("app.dashboard");
+  }
+
+  $scope.user = {};
+  
+  $scope.login = function() {
+    Auth.$signInWithEmailAndPassword($scope.user.email, $scope.user.password)
+      .then(function(firebaseUser) {
+        $rootScope.currentUser = firebaseUser;
+        $state.go("app.dashboard");
+      }, function(err) {
+        
+      });
+  }
 }]);
 
 App.controller('MailboxFolderController', ["$scope", "$stateParams", "$state", "appMediaquery", "$window", "$timeout", function($scope, $stateParams, $state, appMediaquery, $window, $timeout) {
