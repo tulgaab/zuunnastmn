@@ -303,17 +303,18 @@
 	padding-bottom: 117px;
 }
 .section-header h3 {
-	font-size: 22px;
-	font-weight: 700;
-	color: #333;
-	margin: 0;
-	text-transform: uppercase;
-	padding-bottom: 7px;
-	letter-spacing: 3px;
-	background-image: url("../images/section-seprator.png");
-	background-repeat: no-repeat;
-	background-position: center bottom;
-	padding-bottom: 30px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    text-transform: uppercase;
+    border-bottom: 2px solid #4caf50;
+    padding-bottom: 7px;
+    letter-spacing: 3px;
+    /* background-image: url(../images/section-seprator.png); */
+    /* background-repeat: no-repeat; */
+    /* background-position: center bottom; */
+    padding-bottom: 25px;
 }
 .service-section .section-header h3,
 .department-section .section-header h3,
@@ -531,7 +532,7 @@
 		color: #fff;
 	}
 .call-out {
-	background: url("../images/call-out-bg.jpg");
+	background: url("../assets/images/bg2.jpg");
 	width: 100%;
 	height: 100%;
 	background-repeat: no-repeat;
@@ -866,6 +867,7 @@
 }
 .we-are-best .section-header > p {
 	padding-right: 0;
+	text-align: justify;
 }
 .we-are-best-block {
 	display: inline-block;
@@ -965,7 +967,7 @@
 	position: absolute;
 }
 .departments .panel-body {
-	padding-left: 165px;
+	/*padding-left: 165px;*/
 	padding-top: 0;
 	margin-bottom: 19px;
 }
@@ -992,7 +994,7 @@
 
 /* -- Counter Section */
 .counter-section {
-	background: url("../images/happy-customer.jpg");
+	background: url("../assets/images/bg1_bkup.jpg");
 	background-size: cover;
 	background-repeat: no-repeat;
 	position: relative;
@@ -2369,7 +2371,7 @@
 		padding-right: 30px;
 	}
 	.we-are-best .section-header > p {
-		padding-right: 10px;
+		padding-right: 10px;	
 	}
 	.we-are-best-block {
 		margin-top: 30px;
@@ -2556,10 +2558,10 @@
 	.departments {
 		margin-bottom: 100px;
 	}
-	.departments .panel-body {
+	/*.departments .panel-body {
 		padding-left: 130px;
 		padding-right: 0;
-	}
+	}*/
 	.departments .section-header h3 {
 		font-size: 17px;
 	}

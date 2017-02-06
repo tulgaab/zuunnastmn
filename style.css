@@ -36,7 +36,7 @@
 /* ## Global */
 
 body {
-	font-family: 'PT Sans', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	font-size: 14px;
 	color: #000;
 	overflow-x: hidden;
@@ -84,7 +84,7 @@ a {
 .statistics-content > span,
 .entry-title,
 .entry-title a {
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 
 .banner-left span {
@@ -105,7 +105,7 @@ a {
 }
 .top-header .col-md-6:last-child > a > span,
 .portfolio-item-hover h4 {
-	font-family: 'Lato', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 
 /* - Font Settings */
@@ -191,7 +191,7 @@ ul {
 .top-header .col-md-6:last-child > a {
 	background-color: #4CAF50;
 	color: #fff;
-	padding: 10px 30px 10px 47px;
+	padding: 10px 30px;
 	font-weight: 900;
 	text-transform: uppercase;
 	font-size: 11px;
@@ -271,6 +271,8 @@ ul {
 	display: inline-block;
 	margin-top: -60px;
 	margin-bottom: 55px;
+	border-radius: 15px;
+    overflow: hidden;
 }
 .contact-details:before,
 .contact-details:after {
@@ -306,12 +308,13 @@ ul {
 	border-bottom: 1px solid #4CAF50;
 }
 .contact-details .detail-box h4 { 
-	font-size: 13px;
-	margin: 0;
-	font-weight: 900;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	margin-bottom: 10px;
+	font-size: 15px;
+    margin: 0;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-family: "Roboto Condensed";
 }
 .contact-details .detail-box p { 
 	font-size: 13px;
