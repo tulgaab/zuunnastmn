@@ -1,13 +1,3 @@
-/*!
- * 
- * Singular - Bootstrap Admin Theme + AngularJS
- * 
- * Author: @geedmo
- * Website: http://geedmo.com
- * License: http://themeforest.net/licenses/standard?license=regular
- * 
- */
-
 if (typeof $ === 'undefined') { throw new Error('This application\'s JavaScript requires jQuery'); }
 
 
@@ -186,7 +176,7 @@ App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$comp
       firebase.initializeApp(config);
 
       // default route to dashboard
-      $urlRouterProvider.otherwise('/page/login');
+      $urlRouterProvider.otherwise('/login');
 
       // 
       // App Routes
@@ -327,6 +317,23 @@ App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$comp
             templateUrl: basepath('documentation.html'),
             resolve: requireDeps('flatdoc')
         })
+        .state('app.posts', {
+            url: '/posts',
+            templateUrl: basepath('posts.html'),
+            controller: 'PostsController',
+            resolve:{
+              "currentAuth": ["Auth", function(Auth) {
+                  return Auth.$requireSignIn();
+              }],
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  'app/vendor/ng-table/ng-table.min.js',
+                  'app/vendor/ng-table/ng-table.min.css'
+                ]);
+              }]
+
+            }
+        })
         // Mailbox
         // ----------------------------------- 
         .state('app.mailbox', {
@@ -369,9 +376,9 @@ App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$comp
         // Single Page Routes
         // ----------------------------------- 
         .state('page', {
-            url: '/page',
+            /*url: '/page',*/
             templateUrl: 'app/pages/page.html',
-            resolve: requireDeps('icons', 'animate')
+            resolve: requireDeps('icons', 'animate','toaster')
         })
         .state('page.login', {
             url: '/login',
@@ -395,6 +402,7 @@ App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$comp
             url: '/lock',
             templateUrl: 'app/pages/lock.html'
         })
+        
         // 
         // CUSTOM RESOLVE FUNCTION
         //   Add your own resolve properties
@@ -768,7 +776,7 @@ App.controller('MailboxController', ["$rootScope", "$scope", "$state", function(
 
 }]);
 
-App.controller('LoginController', ["$rootScope", "$scope", "$state","currentAuth","$firebaseAuth", "$firebaseObject", "Auth", function($rootScope, $scope, $state,currentAuth, $firebaseAuth, $firebaseObject, Auth) {
+App.controller('LoginController', ["$rootScope", "$scope", "$state","currentAuth","$firebaseAuth", "$firebaseObject", "Auth",'toaster', function($rootScope, $scope, $state,currentAuth, $firebaseAuth, $firebaseObject, Auth, toaster) {
   'use strict';
   $scope.currentUser = $rootScope.currentUser;
   if ($scope.currentUser){
@@ -776,17 +784,96 @@ App.controller('LoginController', ["$rootScope", "$scope", "$state","currentAuth
   }
 
   $scope.user = {};
-  
+
   $scope.login = function() {
     Auth.$signInWithEmailAndPassword($scope.user.email, $scope.user.password)
       .then(function(firebaseUser) {
+        toaster.pop("success", "Мэдээлэл", "Амжилттай нэвтэрлээ.");
         $rootScope.currentUser = firebaseUser;
-        $state.go("app.dashboard");
+        $state.go("app.posts");
       }, function(err) {
-        
+        toaster.pop("error", "Анхаар", "Таны имэйл хаяг эсвэл нууц үг буруу байна.");
       });
   }
 }]);
+
+/**=========================================================
+ * Module: PostsController.js
+ * Controller for ngTables
+ =========================================================*/
+
+App.controller('PostsController', PostsController);
+
+function PostsController($scope, $filter, ngTableParams,$firebaseAuth, $firebaseObject, Auth, $rootScope, $firebaseArray,$state) {
+  'use strict';
+  $scope.currentUser = $rootScope.currentUser;
+  $scope.auth = Auth;
+  $scope.posts = [];
+  $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+    $scope.currentUser = firebaseUser;
+    if(firebaseUser == null || firebaseUser == undefined){
+      $state.go("page.login");
+    }
+  });
+  
+  var messagesRef = firebase.database().ref().child("posts");
+  $scope.posts = $firebaseArray(messagesRef);
+
+  
+
+  $scope.tableParams = new ngTableParams({
+    page: 1,            // show first page
+    count: 10,          // count per page
+    sorting: {
+        name: 'asc'     // initial sorting
+    }
+    },{
+      total: $scope.posts.length, // length of data
+      getData: function($defer, params) {
+        var orderedData = params.sorting() ? $filter('orderBy')($scope.posts, params.orderBy()) : $scope.posts;
+        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+    }
+  });
+
+  $scope.posts.$watch(function(e) {
+    $scope.tableParams.reload();
+  });
+
+  $scope.open = function (size) {
+
+    var modalInstance = $modal.open({
+      templateUrl: '/myModalContent.html',
+      controller: ModalInstanceCtrl,
+      size: size
+    });
+
+    var state = $('#modal-state');
+    modalInstance.result.then(function () {
+      state.text('Modal dismissed with OK status');
+    }, function () {
+      state.text('Modal dismissed with Cancel status');
+    });
+  };
+
+  // Please note that $modalInstance represents a modal window (instance) dependency.
+  // It is not the same as the $modal service used above.
+
+  var ModalInstanceCtrl = function ($scope, $modalInstance) {
+
+    $scope.ok = function () {
+      $modalInstance.close('closed');
+    };
+
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+  };
+  ModalInstanceCtrl.$inject = ["$scope", "$modalInstance"];
+
+}
+AngularTableController.$inject = ["$scope", "$filter", "ngTableParams"];
+
+
 
 App.controller('MailboxFolderController', ["$scope", "$stateParams", "$state", "appMediaquery", "$window", "$timeout", function($scope, $stateParams, $state, appMediaquery, $window, $timeout) {
 
@@ -1903,13 +1990,20 @@ App.service('language', ["$translate", function($translate) {
  * Controls the header navigation
  =========================================================*/
 
-App.controller('HeaderNavController', ['$scope', function($scope) {
+App.controller('HeaderNavController', ['$scope','$rootScope','Auth','$state', function($scope,$rootScope,Auth,$state) {
   'use strict';
   $scope.headerMenuCollapsed = true;
 
   $scope.toggleHeaderMenu = function() {
     $scope.headerMenuCollapsed = !$scope.headerMenuCollapsed;
   };
+
+  $scope.currentUser = $rootScope.currentUser;
+  $scope.auth = Auth;
+  
+  $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+    $scope.currentUser = firebaseUser;
+  });
 
 }]);
 /**=========================================================

@@ -1,0 +1,30 @@
+<h3>Мэдээ мэдээлэл</h3>
+<div class="container-fluid">
+   <div class="panel panel-default">
+      <div class="panel-heading">
+         <button data-ng-click="" class="pull-right btn btn-default btn-sm">Шинэ мэдээ нэмэх</button>
+         <div class="panel-title">Мэдээний жагсаалт</div>
+      </div>
+      <table data-ng-table="tableParams" class="table table-bordered table-striped">
+         <tbody>
+            <tr data-ng-repeat="post in $data">
+               <td data-title="'Гарчиг'" sortable="'title'">{{post.title}}</td>
+               <td data-title="'Нийтлэсэн огноо'" sortable="'createdat'">{{post.createdat | date:'yyyy-MM-dd HH:mm'}}</td>
+               <td data-title="''">
+                  <center>
+                     <div dropdown="dropdown" class="btn-group mb-sm mr">
+                        <button type="button" data-ng-disabled="disabled" dropdown-toggle="" class="btn dropdown-toggle btn-default">Үйлдэл&nbsp;
+                           <span class="caret"></span>
+                        </button>
+                        <ul role="menu" class="dropdown-menu">
+                           <li><a href="#">Засах</a></li>
+                           <li><a href="#">Устгах</a></li>
+                        </ul>
+                     </div>
+                  </center>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>
