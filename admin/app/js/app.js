@@ -780,7 +780,7 @@ App.controller('LoginController', ["$rootScope", "$scope", "$state","currentAuth
   'use strict';
   $scope.currentUser = $rootScope.currentUser;
   if ($scope.currentUser){
-    $state.go("app.dashboard");
+    $state.go("app.posts");
   }
 
   $scope.user = {};
