@@ -2,7 +2,7 @@ if (typeof $ === 'undefined') { throw new Error('This application\'s JavaScript 
 
 
 
-var App = angular.module('singular', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCookies', 'pascalprecht.translate', 'ui.bootstrap', 'ui.router', 'oc.lazyLoad', 'cfp.loadingBar', 'ui.utils','firebase'])
+var App = angular.module('singular', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCookies', 'pascalprecht.translate', 'ui.bootstrap', 'ui.router', 'oc.lazyLoad', 'cfp.loadingBar', 'ui.utils','firebase','ui.tinymce','ngFileUpload'])
     .run(["$rootScope", "$state", "$stateParams", '$localStorage', function ($rootScope, $state, $stateParams, $localStorage) {
     // Set reference to access them from any scope
     $rootScope.$state = $state;
@@ -187,7 +187,7 @@ App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$comp
             abstract: true,
             templateUrl: basepath('app.html'),
             controller: 'AppController',
-            resolve: requireDeps('icons', 'screenfull', 'sparklines', 'slimscroll', 'toaster', 'ui.knob', 'animate')
+            resolve: requireDeps('icons', 'screenfull', 'sparklines', 'slimscroll', 'toaster', 'ui.knob', 'animate','wysiwyg')
         })
         .state('app.dashboard', {
             url: '/dashboard',
@@ -261,7 +261,7 @@ App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$comp
         .state('app.form-inputs', {
             url: '/form-inputs',
             templateUrl: basepath('form-inputs.html'),
-            resolve: requireDeps('moment', 'inputmask', 'angular-chosen', 'slider', 'wysiwyg')
+            resolve: requireDeps('moment', 'inputmask', 'angular-chosen', 'slider')
         })
         .state('app.form-validation', {
             url: '/form-validation',
@@ -804,7 +804,7 @@ App.controller('LoginController', ["$rootScope", "$scope", "$state","currentAuth
 
 App.controller('PostsController', PostsController);
 
-function PostsController($scope, $filter, ngTableParams,$firebaseAuth, $firebaseObject, Auth, $rootScope, $firebaseArray,$state) {
+function PostsController($scope, $filter, ngTableParams,$firebaseAuth, $firebaseObject, Auth, $rootScope, $firebaseArray,$state, $modal) {
   'use strict';
   $scope.currentUser = $rootScope.currentUser;
   $scope.auth = Auth;
@@ -825,7 +825,7 @@ function PostsController($scope, $filter, ngTableParams,$firebaseAuth, $firebase
     page: 1,            // show first page
     count: 10,          // count per page
     sorting: {
-        name: 'asc'     // initial sorting
+        createdat: 'desc'     // initial sorting
     }
     },{
       total: $scope.posts.length, // length of data
@@ -839,39 +839,82 @@ function PostsController($scope, $filter, ngTableParams,$firebaseAuth, $firebase
     $scope.tableParams.reload();
   });
 
-  $scope.open = function (size) {
-
+  $scope.open = function (post) {
     var modalInstance = $modal.open({
-      templateUrl: '/myModalContent.html',
-      controller: ModalInstanceCtrl,
-      size: size
-    });
-
-    var state = $('#modal-state');
-    modalInstance.result.then(function () {
-      state.text('Modal dismissed with OK status');
-    }, function () {
-      state.text('Modal dismissed with Cancel status');
+      templateUrl: 'postTemplate.html',
+      controller: PostModalInstanceCtrl,
+      size: "lg",
+      resolve:{
+        Post: function() {return post; }
+      }
     });
   };
 
   // Please note that $modalInstance represents a modal window (instance) dependency.
   // It is not the same as the $modal service used above.
 
-  var ModalInstanceCtrl = function ($scope, $modalInstance) {
+  var PostModalInstanceCtrl = function ($scope, $modalInstance, Post, Auth, toaster) {
+    $scope.post = Post;
+    $scope.currentUser = $rootScope.currentUser;
 
-    $scope.ok = function () {
-      $modalInstance.close('closed');
+    $scope.auth = Auth;
+    $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+      $scope.currentUser = firebaseUser;
+      if(firebaseUser == null || firebaseUser == undefined){
+        $state.go("page.login");
+      }
+    });
+
+    $scope.tinymceOptions = {
+      plugins: 'link image code',
+      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code',
+      theme : "modern"
     };
 
-    $scope.cancel = function () {
+    $scope.modalCancel = function () {
+      $scope.post = {};
       $modalInstance.dismiss('cancel');
     };
+
+    $scope.updatePost = function() {
+      var postData = {
+        uid: $scope.currentUser.uid,
+        description: $scope.post.description,
+        title: $scope.post.title,
+        image: ($scope.post.image && $scope.post.image.length > 0) ? $scope.post.image : "",
+        createdat: ($scope.post.$id && $scope.post.$id.length > 0) ? $scope.post.createdat : new Date(),
+        updatedat: new Date()
+      };
+
+      if ($scope.post.$id && $scope.post.$id.length > 0) {
+        var newPostKey = $scope.post.$id;
+      }
+      else {
+        var newPostKey = firebase.database().ref().child('posts').push().key;
+      }
+
+      var updates = {};
+      updates['/posts/' + newPostKey] = postData;
+      firebase.database().ref().update(updates).then(function(){
+        $scope.modalCancel();
+        toaster.pop("success", "Мэдээлэл", "Амжилттай хадгалагдлаа.");
+      });
+    }
+
+    $scope.imageSelected = function(file) {
+      var storageRef = firebase.storage().ref();
+      var fileRef = storageRef.child(file.name);
+      fileRef.put(file).then(function(snapshot) {
+        $scope.post.image = snapshot.a.downloadURLs[0];
+        $("#post_image_preview").attr('src', $scope.post.image);
+      });
+
+    }
   };
-  ModalInstanceCtrl.$inject = ["$scope", "$modalInstance"];
+  PostModalInstanceCtrl.$inject = ["$scope", "$modalInstance","Post","Auth","toaster"];
 
 }
-AngularTableController.$inject = ["$scope", "$filter", "ngTableParams"];
+PostsController.$inject = ["$scope", "$filter", "ngTableParams","$firebaseAuth", "$firebaseObject", "Auth", "$rootScope", "$firebaseArray","$state", "$modal"];
 
 
 
