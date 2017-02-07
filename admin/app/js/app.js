@@ -804,7 +804,7 @@ App.controller('LoginController', ["$rootScope", "$scope", "$state","currentAuth
 
 App.controller('PostsController', PostsController);
 
-function PostsController($scope, $filter, ngTableParams,$firebaseAuth, $firebaseObject, Auth, $rootScope, $firebaseArray,$state, $modal) {
+function PostsController($scope, $filter, ngTableParams,$firebaseAuth, $firebaseObject, Auth, $rootScope, $firebaseArray,$state, $modal, toaster) {
   'use strict';
   $scope.currentUser = $rootScope.currentUser;
   $scope.auth = Auth;
@@ -818,8 +818,6 @@ function PostsController($scope, $filter, ngTableParams,$firebaseAuth, $firebase
   
   var messagesRef = firebase.database().ref().child("posts");
   $scope.posts = $firebaseArray(messagesRef);
-
-  
 
   $scope.tableParams = new ngTableParams({
     page: 1,            // show first page
@@ -849,6 +847,13 @@ function PostsController($scope, $filter, ngTableParams,$firebaseAuth, $firebase
       }
     });
   };
+
+  $scope.deletePost = function(post){
+    if (confirm("Мэдээг устгах уу?")){
+      firebase.database().ref().child("posts").child(post.$id).remove();
+      toaster.pop("success", "Мэдээлэл", "Амжилттай устгагдлаа.");
+    }
+  }
 
   // Please note that $modalInstance represents a modal window (instance) dependency.
   // It is not the same as the $modal service used above.
@@ -914,7 +919,7 @@ function PostsController($scope, $filter, ngTableParams,$firebaseAuth, $firebase
   PostModalInstanceCtrl.$inject = ["$scope", "$modalInstance","Post","Auth","toaster"];
 
 }
-PostsController.$inject = ["$scope", "$filter", "ngTableParams","$firebaseAuth", "$firebaseObject", "Auth", "$rootScope", "$firebaseArray","$state", "$modal"];
+PostsController.$inject = ["$scope", "$filter", "ngTableParams","$firebaseAuth", "$firebaseObject", "Auth", "$rootScope", "$firebaseArray","$state", "$modal", "toaster"];
 
 
 
