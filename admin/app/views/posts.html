@@ -10,6 +10,7 @@
       <table data-ng-table="tableParams" class="table table-bordered table-striped">
          <tbody>
             <tr data-ng-repeat="post in $data">
+               <td data-title="'#'" style="text-align: center;">{{$index+1}}</td>
                <td data-title="'Гарчиг'" sortable="'title'">{{post.title}}</td>
                <td data-title="'Нийтлэсэн огноо'" sortable="'createdat'">{{post.createdat | date:'yyyy-MM-dd HH:mm'}}</td>
                <td data-title="'Шинэчлэгдсэн огноо'" sortable="'updatedat'">{{post.updatedat | date:'yyyy-MM-dd HH:mm'}}</td>
