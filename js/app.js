@@ -31,6 +31,8 @@ App.controller('ZuunnastController', ZuunnastController);
 function ZuunnastController($scope, $firebaseObject, $firebaseArray) {
   'use strict';
 
+  $scope.subDomain = "/zuunnastmn";
+  
   $scope.getPostsLast = function(){
     var messagesRef = firebase.database().ref().child("posts").limitToFirst(2);
     $scope.posts = $firebaseArray(messagesRef);
@@ -46,6 +48,12 @@ function ZuunnastController($scope, $firebaseObject, $firebaseArray) {
     if (id != null && id != undefined){
       var messagesRef = firebase.database().ref().child("posts").child(id);
       $scope.post = $firebaseObject(messagesRef);
+      $scope.post.$watch(function(e) {
+        if ($scope.post != null && $scope.post != undefined){
+          document.title = $scope.post.title + " - " + document.title;
+        }
+      });
+      
     }
     else{
       $scope.post = {};
